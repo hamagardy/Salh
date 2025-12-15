@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <title>Lens Editor - Salh Al-Amri</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="assets/images/profile.jpg" type="image/jpeg">
+    <link rel="icon" href="assets/images/profile.jpg" type="image/jpeg">
     <style>
         * {
             margin: 0;
@@ -68,6 +69,58 @@
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .remove-btn:hover {
+            background: #cc0000;
+            transform: scale(1.1);
+        }
+
+        .add-lens-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            background: white;
+            border: 3px dashed #00A78E;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            color: #00A78E;
+            transition: all 0.3s;
+            min-height: 200px;
+        }
+
+        .add-lens-btn:hover {
+            background: rgba(0, 167, 142, 0.1);
+            border-color: #008c76;
+            transform: translateY(-3px);
+        }
+
+        .add-lens-btn i {
+            font-size: 40px;
         }
 
         .lens-card h3 {
@@ -215,7 +268,8 @@
         let lensData = JSON.parse(localStorage.getItem('lensData')) || Array(9).fill(null).map((_, i) => ({
             name: `Lens Name ${i + 1}`,
             url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
-            videoUrl: `assets/videos/lens${i + 1}.mp4`
+            videoUrl: `assets/videos/lens${i + 1}.mp4`,
+            iconUrl: `assets/images/logo.svg`
         }));
 
         // Generate lens cards
@@ -227,6 +281,7 @@
                 const card = document.createElement('div');
                 card.className = 'lens-card';
                 card.innerHTML = `
+                    <button class="remove-btn" onclick="removeLens(${index})" title="Remove Lens">×</button>
                     <h3>
                         <span>Lens ${index + 1}</span>
                         <span class="lens-number">${index + 1}</span>
@@ -257,18 +312,61 @@
                                onchange="updateLens(${index}, 'videoUrl', this.value)">
                         <div class="preview">🎥 ${lens.videoUrl}</div>
                     </div>
+                    <div class="form-group">
+                        <label>Lens Icon URL</label>
+                        <input type="text" 
+                               id="icon-${index}" 
+                               value="${lens.iconUrl}" 
+                               placeholder="assets/images/icon.png or https://..."
+                               onchange="updateLens(${index}, 'iconUrl', this.value)">
+                        <div class="preview">🖼️ ${lens.iconUrl}</div>
+                    </div>
                 `;
                 grid.appendChild(card);
             });
+
+            // Add "Add New Lens" button
+            const addCard = document.createElement('div');
+            addCard.className = 'add-lens-btn';
+            addCard.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 50px; margin-bottom: 10px;">+</div>
+                    <div>Add New Lens</div>
+                </div>
+            `;
+            addCard.onclick = addNewLens;
+            grid.appendChild(addCard);
         }
 
         // Update lens data
         function updateLens(index, field, value) {
             lensData[index][field] = value;
             // Update preview
-            if (field === 'url' || field === 'videoUrl') {
-                const preview = document.querySelector(`#${field === 'url' ? 'url' : 'video'}-${index}`).nextElementSibling;
-                preview.textContent = `${field === 'url' ? '🔗' : '🎥'} ${value}`;
+            if (field === 'url' || field === 'videoUrl' || field === 'iconUrl') {
+                const fieldMap = { 'url': 'url', 'videoUrl': 'video', 'iconUrl': 'icon' };
+                const iconMap = { 'url': '🔗', 'videoUrl': '🎥', 'iconUrl': '🖼️' };
+                const preview = document.querySelector(`#${fieldMap[field]}-${index}`).nextElementSibling;
+                preview.textContent = `${iconMap[field]} ${value}`;
+            }
+        }
+
+        // Add new lens
+        function addNewLens() {
+            const newLens = {
+                name: `Lens Name ${lensData.length + 1}`,
+                url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${lensData.length + 1}`,
+                videoUrl: `assets/videos/lens${lensData.length + 1}.mp4`,
+                iconUrl: `assets/images/logo.svg`
+            };
+            lensData.push(newLens);
+            generateLensCards();
+        }
+
+        // Remove lens
+        function removeLens(index) {
+            if (confirm(`Are you sure you want to remove "${lensData[index].name}"?`)) {
+                lensData.splice(index, 1);
+                generateLensCards();
             }
         }
 
@@ -279,7 +377,7 @@
             
             // Show success message
             const message = document.getElementById('successMessage');
-            message.textContent = '✓ Changes saved! Refresh index.html to see updates.';
+            message.textContent = `✓ Changes saved! ${lensData.length} lenses updated. Refresh index.html to see updates.`;
             message.style.display = 'block';
             setTimeout(() => {
                 message.style.display = 'none';

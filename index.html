@@ -3,15 +3,18 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
     <!--====== Title ======-->
-    <title>Freelancer - CV and Portfolio Template</title>
+    <title>Salh Al-Amri - AR Developer & Snapchat Lens Creator</title>
 
-    <meta name="description" content="">
+    <meta name="description" content="Salh Al-Amri - AR Developer and Snapchat Lens Creator based in Riyadh, Saudi Arabia. Creating innovative AR experiences since 2021.">
+    <meta name="author" content="Salh Al-Amri">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!--====== Favicon Icon ======-->
-    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="assets/images/profile.jpg" type="image/jpeg">
+    <link rel="icon" href="assets/images/profile.jpg" type="image/jpeg">
 
     <!--====== Slick CSS ======-->
     <link rel="stylesheet" href="assets/css/animate.css">
@@ -27,6 +30,11 @@
 
     <!--====== Style CSS ======-->
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <!--====== Arabic Font ======-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 
 </head>
 
@@ -66,7 +74,7 @@
                     <div class="col-lg-12">
                         <nav class="navbar navbar-expand-lg">
                             <a class="navbar-brand" href="index.html">
-                                <h3 style="color: #00A78E; margin: 0; font-weight: 700;">Salh Al-Amri</h3>
+                                <img src="assets/images/profile.jpg" alt="Salh Al-Amri" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #00A78E;">
                             </a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="toggler-icon"></span>
@@ -92,7 +100,27 @@
                                         <a class="page-scroll" href="#contact">Contact<span></span></a>
                                     </li>
                                 </ul>
+                                <div class="header-controls d-none d-lg-flex">
+                                    <div class="language-selector">
+                                        <img src="https://cdn.britannica.com/25/4825-050-977D8C5E/Flag-United-Kingdom.jpg" alt="Flag" class="flag-icon" id="flagIcon">
+                                        <select id="languageSelect" onchange="changeLanguage(this.value)">
+                                            <option value="en">EN</option>
+                                            <option value="ar">AR</option>
+                                        </select>
+                                    </div>
+                                    <div class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()"></div>
+                                </div>
                             </div> <!-- navbar collapse -->
+                            <div class="header-controls d-lg-none">
+                                <div class="language-selector">
+                                    <img src="https://cdn.britannica.com/25/4825-050-977D8C5E/Flag-United-Kingdom.jpg" alt="Flag" class="flag-icon" id="flagIconMobile">
+                                    <select id="languageSelectMobile" onchange="changeLanguage(this.value)">
+                                        <option value="en">EN</option>
+                                        <option value="ar">AR</option>
+                                    </select>
+                                </div>
+                                <div class="dark-mode-toggle" id="darkModeToggleMobile" onclick="toggleDarkMode()"></div>
+                            </div>
                         </nav> <!-- navbar -->
                     </div>
                 </div> <!-- row -->
@@ -101,9 +129,10 @@
 
         <div id="home" class="header_hero">
             <ul class="header_social d-none d-lg-block">
-                <li><a href="https://www.snapchat.com/add/s.8f6" target="_blank"><i class="lni lni-snapchat"></i></a></li>
-                <li><a href="https://x.com/s8f66" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></li>
-                <li><a href="https://www.tiktok.com/@s.8f6" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a></li>
+                <li><a href="mailto:salehaamri3@gmail.com" target="_blank" title="Email"><i class="lni lni-envelope"></i></a></li>
+                <li><a href="https://www.snapchat.com/add/s.8f6" target="_blank" title="Snapchat"><i class="lni lni-snapchat"></i></a></li>
+                <li><a href="https://x.com/s8f66" target="_blank" title="Twitter/X"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></li>
+                <li><a href="https://www.tiktok.com/@s.8f6" target="_blank" title="TikTok"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a></li>
             </ul>
             <div class="container">
                 <div class="row align-items-center justify-content-center justify-content-lg-between">
@@ -134,7 +163,7 @@
     <section id="about" class="about_area pt-70 pb-120">
         <div class="container">
             <div class="row align-items-center justify-content-center">
-                <div class="col-lg-6 col-md-9">
+                <div class="col-lg-6 col-md-9 d-none d-lg-block">
                     <div class="about_image mt-50 wow fadeInRightBig" data-wow-duration="1.3s" data-wow-delay="0.5s">
                         <img src="assets/images/profile.jpg" alt="Profile Picture">
                     </div> <!-- about image -->
@@ -334,149 +363,194 @@
                     </div> <!-- section title -->
                 </div>
             </div> <!-- row -->
-            <div class="row">
+            <div class="row" id="lensesContainer">
                 <!-- LENSES START -->
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-4 col-6">
                     <div class="single_lens mt-30 wow fadeInUpBig" data-wow-duration="1.3s" data-wow-delay="0.2s">
                         <div class="lens_video">
                             <video autoplay loop muted playsinline>
                                 <source src="assets/videos/lens1.mp4" type="video/mp4">
                             </video>
                             <div class="lens_overlay">
-                                <i class="lni lni-snapchat"></i>
+                                <div class="lens_icon_circle">
+                                    <i class="lni lni-snapchat"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="lens_content">
+                            <div class="lens_icon_wrapper">
+                                <img src="assets/images/logo.svg" alt="Lens Icon" class="lens_icon">
+                            </div>
                             <h4 class="lens_title">Lens Name 1</h4>
-                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-1" target="_blank" class="lens_btn">Try Lens</a>
+                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-1" target="_blank" class="lens_btn">Open Lens</a>
                         </div>
                     </div> <!-- single lens -->
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-4 col-6">
                     <div class="single_lens mt-30 wow fadeInUpBig" data-wow-duration="1.3s" data-wow-delay="0.4s">
                         <div class="lens_video">
                             <video autoplay loop muted playsinline>
                                 <source src="assets/videos/lens2.mp4" type="video/mp4">
                             </video>
                             <div class="lens_overlay">
-                                <i class="lni lni-snapchat"></i>
+                                <div class="lens_icon_circle">
+                                    <i class="lni lni-snapchat"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="lens_content">
+                            <div class="lens_icon_wrapper">
+                                <img src="assets/images/logo.svg" alt="Lens Icon" class="lens_icon">
+                            </div>
                             <h4 class="lens_title">Lens Name 2</h4>
-                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-2" target="_blank" class="lens_btn">Try Lens</a>
+                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-2" target="_blank" class="lens_btn">Open Lens</a>
                         </div>
                     </div> <!-- single lens -->
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-4 col-6">
                     <div class="single_lens mt-30 wow fadeInUpBig" data-wow-duration="1.3s" data-wow-delay="0.6s">
                         <div class="lens_video">
                             <video autoplay loop muted playsinline>
                                 <source src="assets/videos/lens3.mp4" type="video/mp4">
                             </video>
                             <div class="lens_overlay">
-                                <i class="lni lni-snapchat"></i>
+                                <div class="lens_icon_circle">
+                                    <i class="lni lni-snapchat"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="lens_content">
+                            <div class="lens_icon_wrapper">
+                                <img src="assets/images/logo.svg" alt="Lens Icon" class="lens_icon">
+                            </div>
                             <h4 class="lens_title">Lens Name 3</h4>
-                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-3" target="_blank" class="lens_btn">Try Lens</a>
+                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-3" target="_blank" class="lens_btn">Open Lens</a>
                         </div>
                     </div> <!-- single lens -->
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-4 col-6">
                     <div class="single_lens mt-30 wow fadeInUpBig" data-wow-duration="1.3s" data-wow-delay="0.2s">
                         <div class="lens_video">
                             <video autoplay loop muted playsinline>
                                 <source src="assets/videos/lens4.mp4" type="video/mp4">
                             </video>
                             <div class="lens_overlay">
-                                <i class="lni lni-snapchat"></i>
+                                <div class="lens_icon_circle">
+                                    <i class="lni lni-snapchat"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="lens_content">
+                            <div class="lens_icon_wrapper">
+                                <img src="assets/images/logo.svg" alt="Lens Icon" class="lens_icon">
+                            </div>
                             <h4 class="lens_title">Lens Name 4</h4>
-                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-4" target="_blank" class="lens_btn">Try Lens</a>
+                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-4" target="_blank" class="lens_btn">Open Lens</a>
                         </div>
                     </div> <!-- single lens -->
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-4 col-6">
                     <div class="single_lens mt-30 wow fadeInUpBig" data-wow-duration="1.3s" data-wow-delay="0.4s">
                         <div class="lens_video">
                             <video autoplay loop muted playsinline>
                                 <source src="assets/videos/lens5.mp4" type="video/mp4">
                             </video>
                             <div class="lens_overlay">
-                                <i class="lni lni-snapchat"></i>
+                                <div class="lens_icon_circle">
+                                    <i class="lni lni-snapchat"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="lens_content">
+                            <div class="lens_icon_wrapper">
+                                <img src="assets/images/logo.svg" alt="Lens Icon" class="lens_icon">
+                            </div>
                             <h4 class="lens_title">Lens Name 5</h4>
-                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-5" target="_blank" class="lens_btn">Try Lens</a>
+                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-5" target="_blank" class="lens_btn">Open Lens</a>
                         </div>
                     </div> <!-- single lens -->
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-4 col-6">
                     <div class="single_lens mt-30 wow fadeInUpBig" data-wow-duration="1.3s" data-wow-delay="0.6s">
                         <div class="lens_video">
                             <video autoplay loop muted playsinline>
                                 <source src="assets/videos/lens6.mp4" type="video/mp4">
                             </video>
                             <div class="lens_overlay">
-                                <i class="lni lni-snapchat"></i>
+                                <div class="lens_icon_circle">
+                                    <i class="lni lni-snapchat"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="lens_content">
+                            <div class="lens_icon_wrapper">
+                                <img src="assets/images/logo.svg" alt="Lens Icon" class="lens_icon">
+                            </div>
                             <h4 class="lens_title">Lens Name 6</h4>
-                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-6" target="_blank" class="lens_btn">Try Lens</a>
+                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-6" target="_blank" class="lens_btn">Open Lens</a>
                         </div>
                     </div> <!-- single lens -->
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-4 col-6">
                     <div class="single_lens mt-30 wow fadeInUpBig" data-wow-duration="1.3s" data-wow-delay="0.2s">
                         <div class="lens_video">
                             <video autoplay loop muted playsinline>
                                 <source src="assets/videos/lens7.mp4" type="video/mp4">
                             </video>
                             <div class="lens_overlay">
-                                <i class="lni lni-snapchat"></i>
+                                <div class="lens_icon_circle">
+                                    <i class="lni lni-snapchat"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="lens_content">
+                            <div class="lens_icon_wrapper">
+                                <img src="assets/images/logo.svg" alt="Lens Icon" class="lens_icon">
+                            </div>
                             <h4 class="lens_title">Lens Name 7</h4>
-                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-7" target="_blank" class="lens_btn">Try Lens</a>
+                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-7" target="_blank" class="lens_btn">Open Lens</a>
                         </div>
                     </div> <!-- single lens -->
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-4 col-6">
                     <div class="single_lens mt-30 wow fadeInUpBig" data-wow-duration="1.3s" data-wow-delay="0.4s">
                         <div class="lens_video">
                             <video autoplay loop muted playsinline>
                                 <source src="assets/videos/lens8.mp4" type="video/mp4">
                             </video>
                             <div class="lens_overlay">
-                                <i class="lni lni-snapchat"></i>
+                                <div class="lens_icon_circle">
+                                    <i class="lni lni-snapchat"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="lens_content">
+                            <div class="lens_icon_wrapper">
+                                <img src="assets/images/logo.svg" alt="Lens Icon" class="lens_icon">
+                            </div>
                             <h4 class="lens_title">Lens Name 8</h4>
-                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-8" target="_blank" class="lens_btn">Try Lens</a>
+                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-8" target="_blank" class="lens_btn">Open Lens</a>
                         </div>
                     </div> <!-- single lens -->
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-4 col-6">
                     <div class="single_lens mt-30 wow fadeInUpBig" data-wow-duration="1.3s" data-wow-delay="0.6s">
                         <div class="lens_video">
                             <video autoplay loop muted playsinline>
                                 <source src="assets/videos/lens9.mp4" type="video/mp4">
                             </video>
                             <div class="lens_overlay">
-                                <i class="lni lni-snapchat"></i>
+                                <div class="lens_icon_circle">
+                                    <i class="lni lni-snapchat"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="lens_content">
+                            <div class="lens_icon_wrapper">
+                                <img src="assets/images/logo.svg" alt="Lens Icon" class="lens_icon">
+                            </div>
                             <h4 class="lens_title">Lens Name 9</h4>
-                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-9" target="_blank" class="lens_btn">Try Lens</a>
+                            <a href="https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-9" target="_blank" class="lens_btn">Open Lens</a>
                         </div>
                     </div> <!-- single lens -->
                 </div>
@@ -509,7 +583,7 @@
                             </div> <!-- call to action content -->
 
                             <div class="call_to_action_btn">
-                                <a href="#contact" class="main-btn">HIRE ME</a>
+                                <a href="mailto:salehaamri3@gmail.com?subject=AR%20Project%20Inquiry&body=Hi%20Salh,%0A%0AI'm%20interested%20in%20working%20with%20you%20on%20an%20AR%20project." class="main-btn">HIRE ME</a>
                             </div> <!-- call to action btn -->
                         </div> <!-- call to action box -->
                     </div>
@@ -529,11 +603,12 @@
                     <div class="footer_content text-center">
                         <h2 style="color: #00A78E; font-weight: 700;">Salh Al-Amri</h2>
                         <ul class="footer_social">
-                            <li><a href="https://www.snapchat.com/add/s.8f6" target="_blank"><i class="lni lni-snapchat"></i></a></li>
-                            <li><a href="https://x.com/s8f66" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></li>
-                            <li><a href="https://www.tiktok.com/@s.8f6" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a></li>
+                            <li><a href="mailto:salehaamri3@gmail.com" target="_blank" title="Email"><i class="lni lni-envelope"></i></a></li>
+                            <li><a href="https://www.snapchat.com/add/s.8f6" target="_blank" title="Snapchat"><i class="lni lni-snapchat"></i></a></li>
+                            <li><a href="https://x.com/s8f66" target="_blank" title="Twitter/X"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></li>
+                            <li><a href="https://www.tiktok.com/@s.8f6" target="_blank" title="TikTok"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg></a></li>
                         </ul>
-                        <span class="email">salh@snapchatcreations.com</span>
+                        <a href="mailto:salehaamri3@gmail.com" class="email" style="color: #00A78E; text-decoration: none; font-weight: 600; display: inline-block; margin: 15px 0;">salehaamri3@gmail.com</a>
                         <ul class="footer_menu">
                             <li><a href="#home">Home</a></li>
                             <li><a href="#about">About</a></li>
@@ -587,17 +662,259 @@
     <!--====== Main js ======-->
     <script src="assets/js/main.js"></script>
 
+    <!--====== Translations ======-->
+    <script>
+        const translations = {
+            en: {
+                home: "Home",
+                about: "About",
+                services: "Services",
+                lenses: "Snapchat Lenses",
+                contact: "Contact",
+                hello: "Hello",
+                imName: "I'm Salh Al-Amri",
+                role: "AR Developer & Snapchat Lens Creator",
+                intro: "Creating innovative AR experiences and Snapchat lenses since 2021. Based in Riyadh, Saudi Arabia.",
+                getInTouch: "Get In Touch",
+                aboutTitle: "About",
+                aboutSubtitle: "About Snapchat Creations",
+                aboutText: "I'm Salh Al-Amri, an AR developer and Snapchat lens creator based in Riyadh, Saudi Arabia. I've been developing innovative lenses for Snapchat since 2021, creating engaging augmented reality experiences that have reached millions of users worldwide. I also create Lens Studio tutorials to help others learn AR development and share my knowledge with the creative community.",
+                servicesTitle: "Services",
+                servicesSubtitle: "Service I Provide",
+                service1Title: "Snapchat Lenses",
+                service1Text: "Creating engaging and interactive AR lenses for Snapchat with advanced effects, face tracking, and custom animations.",
+                service2Title: "AR Development",
+                service2Text: "Building immersive augmented reality experiences using Lens Studio with custom scripts and interactive elements.",
+                service3Title: "3D Modeling",
+                service3Text: "Designing and creating custom 3D models and assets for AR lenses using Blender and other 3D software.",
+                service4Title: "Website Development",
+                service4Text: "Building modern, responsive websites with clean code and user-friendly interfaces for businesses and creators.",
+                service5Title: "Lens Studio Tutorials",
+                service5Text: "Creating educational content and tutorials to help others learn AR development and Lens Studio techniques.",
+                service6Title: "Custom AR Effects",
+                service6Text: "Developing unique AR filters and effects tailored to your brand or creative vision with advanced features.",
+                portfolioTitle: "Portfolio",
+                portfolioSubtitle: "My Snapchat Lenses",
+                openLens: "Open Lens",
+                ctaTitle: "Ready to Create Amazing AR Experiences?",
+                ctaText: "Let's work together to bring your creative vision to life with custom Snapchat lenses and AR effects",
+                hireMe: "HIRE ME"
+            },
+            ar: {
+                home: "الرئيسية",
+                about: "عن",
+                services: "الخدمات",
+                lenses: "عدسات سناب شات",
+                contact: "تواصل",
+                hello: "مرحباً",
+                imName: "أنا صالح العامري",
+                role: "مطور الواقع المعزز ومبتكر عدسات سناب شات",
+                intro: "أقوم بإنشاء تجارب واقع معزز مبتكرة وعدسات سناب شات منذ عام 2021. مقري في الرياض، المملكة العربية السعودية.",
+                getInTouch: "تواصل معي",
+                aboutTitle: "عن",
+                aboutSubtitle: "عن إبداعات سناب شات",
+                aboutText: "أنا صالح العامري، مطور واقع معزز ومبتكر عدسات سناب شات مقره في الرياض، المملكة العربية السعودية. أقوم بتطوير عدسات مبتكرة لسناب شات منذ عام 2021، وإنشاء تجارب واقع معزز جذابة وصلت إلى ملايين المستخدمين حول العالم. كما أقوم بإنشاء دروس تعليمية لـ Lens Studio لمساعدة الآخرين على تعلم تطوير الواقع المعزز ومشاركة معرفتي مع المجتمع الإبداعي.",
+                servicesTitle: "الخدمات",
+                servicesSubtitle: "الخدمات التي أقدمها",
+                service1Title: "عدسات سناب شات",
+                service1Text: "إنشاء عدسات واقع معزز تفاعلية وجذابة لسناب شات مع تأثيرات متقدمة وتتبع الوجه ورسوم متحركة مخصصة.",
+                service2Title: "تطوير الواقع المعزز",
+                service2Text: "بناء تجارب واقع معزز غامرة باستخدام Lens Studio مع نصوص مخصصة وعناصر تفاعلية.",
+                service3Title: "النمذجة ثلاثية الأبعاد",
+                service3Text: "تصميم وإنشاء نماذج وأصول ثلاثية الأبعاد مخصصة لعدسات الواقع المعزز باستخدام Blender وبرامج أخرى.",
+                service4Title: "تطوير المواقع",
+                service4Text: "بناء مواقع ويب حديثة ومتجاوبة بكود نظيف وواجهات سهلة الاستخدام للشركات والمبدعين.",
+                service5Title: "دروس Lens Studio",
+                service5Text: "إنشاء محتوى تعليمي ودروس لمساعدة الآخرين على تعلم تطوير الواقع المعزز وتقنيات Lens Studio.",
+                service6Title: "تأثيرات واقع معزز مخصصة",
+                service6Text: "تطوير فلاتر وتأثيرات واقع معزز فريدة مصممة خصيصاً لعلامتك التجارية أو رؤيتك الإبداعية مع ميزات متقدمة.",
+                portfolioTitle: "المعرض",
+                portfolioSubtitle: "عدسات سناب شات الخاصة بي",
+                openLens: "فتح العدسة",
+                ctaTitle: "هل أنت مستعد لإنشاء تجارب واقع معزز مذهلة؟",
+                ctaText: "دعنا نعمل معاً لتحويل رؤيتك الإبداعية إلى واقع من خلال عدسات سناب شات وتأثيرات الواقع المعزز المخصصة",
+                hireMe: "وظفني"
+            }
+        };
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const desktopToggle = document.getElementById('darkModeToggle');
+            const mobileToggle = document.getElementById('darkModeToggleMobile');
+            if (desktopToggle) desktopToggle.classList.toggle('active');
+            if (mobileToggle) mobileToggle.classList.toggle('active');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // Load Dark Mode Preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            const desktopToggle = document.getElementById('darkModeToggle');
+            const mobileToggle = document.getElementById('darkModeToggleMobile');
+            if (desktopToggle) desktopToggle.classList.add('active');
+            if (mobileToggle) mobileToggle.classList.add('active');
+        }
+
+        // Change Language
+        function changeLanguage(lang) {
+            const t = translations[lang];
+            document.documentElement.lang = lang;
+            
+            // Update both desktop and mobile selectors
+            const desktopSelect = document.getElementById('languageSelect');
+            const mobileSelect = document.getElementById('languageSelectMobile');
+            if (desktopSelect) desktopSelect.value = lang;
+            if (mobileSelect) mobileSelect.value = lang;
+            
+            // Change flag images
+            const flagIcon = document.getElementById('flagIcon');
+            const flagIconMobile = document.getElementById('flagIconMobile');
+            
+            if (lang === 'ar') {
+                const saudiFlag = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/1200px-Flag_of_Saudi_Arabia.svg.png';
+                if (flagIcon) {
+                    flagIcon.src = saudiFlag;
+                    flagIcon.alt = 'Saudi Arabia Flag';
+                }
+                if (flagIconMobile) {
+                    flagIconMobile.src = saudiFlag;
+                    flagIconMobile.alt = 'Saudi Arabia Flag';
+                }
+                document.body.classList.add('arabic-lang');
+                document.body.style.fontFamily = "'Cairo', sans-serif";
+            } else {
+                const ukFlag = 'https://cdn.britannica.com/25/4825-050-977D8C5E/Flag-United-Kingdom.jpg';
+                if (flagIcon) {
+                    flagIcon.src = ukFlag;
+                    flagIcon.alt = 'UK Flag';
+                }
+                if (flagIconMobile) {
+                    flagIconMobile.src = ukFlag;
+                    flagIconMobile.alt = 'UK Flag';
+                }
+                document.body.classList.remove('arabic-lang');
+                document.body.style.fontFamily = "'Open Sans', sans-serif";
+            }
+
+            // Update navigation
+            document.querySelectorAll('.navbar-nav .nav-item a').forEach((link, index) => {
+                const keys = ['home', 'about', 'services', 'lenses', 'contact'];
+                if (keys[index]) link.childNodes[0].textContent = t[keys[index]];
+            });
+
+            // Update hero section
+            document.querySelector('.header_sub_title').textContent = t.hello;
+            document.querySelector('.header_title').textContent = t.imName;
+            document.querySelector('.header_hero_content span').textContent = t.role;
+            document.querySelector('.header_hero_content p').textContent = t.intro;
+            document.querySelector('.header_hero_content .main-btn').textContent = t.getInTouch;
+
+            // Update about section
+            document.querySelectorAll('.section_title .sub_title')[0].textContent = t.aboutTitle;
+            document.querySelectorAll('.section_title .main_title')[0].textContent = t.aboutSubtitle;
+            document.querySelector('.about_content p').textContent = t.aboutText;
+
+            // Update services section
+            document.querySelectorAll('.section_title .sub_title')[1].textContent = t.servicesTitle;
+            document.querySelectorAll('.section_title .main_title')[1].textContent = t.servicesSubtitle;
+            
+            const serviceTitles = document.querySelectorAll('.service_title a');
+            const serviceTexts = document.querySelectorAll('.service_content p');
+            serviceTitles[0].textContent = t.service1Title;
+            serviceTexts[0].textContent = t.service1Text;
+            serviceTitles[1].textContent = t.service2Title;
+            serviceTexts[1].textContent = t.service2Text;
+            serviceTitles[2].textContent = t.service3Title;
+            serviceTexts[2].textContent = t.service3Text;
+            serviceTitles[3].textContent = t.service4Title;
+            serviceTexts[3].textContent = t.service4Text;
+            serviceTitles[4].textContent = t.service5Title;
+            serviceTexts[4].textContent = t.service5Text;
+            serviceTitles[5].textContent = t.service6Title;
+            serviceTexts[5].textContent = t.service6Text;
+
+            // Update portfolio section
+            document.querySelectorAll('.section_title .sub_title')[2].textContent = t.portfolioTitle;
+            document.querySelectorAll('.section_title .main_title')[2].textContent = t.portfolioSubtitle;
+            document.querySelectorAll('.lens_btn').forEach(btn => {
+                btn.textContent = t.openLens;
+            });
+
+            // Update CTA section
+            document.querySelector('.action_title').textContent = t.ctaTitle;
+            document.querySelector('.call_to_action_content p').textContent = t.ctaText;
+            document.querySelector('.call_to_action_btn .main-btn').textContent = t.hireMe;
+
+            // Save language preference
+            localStorage.setItem('language', lang);
+        }
+
+        // Load Language Preference
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('language') || 'en';
+            const desktopSelect = document.getElementById('languageSelect');
+            const mobileSelect = document.getElementById('languageSelectMobile');
+            if (desktopSelect) desktopSelect.value = savedLang;
+            if (mobileSelect) mobileSelect.value = savedLang;
+            if (savedLang === 'ar') {
+                changeLanguage('ar');
+            }
+        });
+    </script>
+
     <!--====== Load Lenses from LocalStorage ======-->
     <script>
         // Load lens data from localStorage and update the page
         document.addEventListener('DOMContentLoaded', function() {
             const lensData = JSON.parse(localStorage.getItem('lensData'));
             
-            if (lensData && lensData.length === 9) {
+            if (lensData && lensData.length > 0) {
+                const container = document.getElementById('lensesContainer');
+                
+                // Clear existing lenses (keep the comment markers)
+                const startComment = container.querySelector('.col-lg-4');
+                if (startComment) {
+                    // Remove all lens cards
+                    while (container.firstChild) {
+                        container.removeChild(container.firstChild);
+                    }
+                }
+                
+                // Generate lens cards dynamically
+                lensData.forEach((lens, index) => {
+                    const delay = (index % 3) * 0.2 + 0.2;
+                    const col = document.createElement('div');
+                    col.className = 'col-lg-4 col-md-4 col-6';
+                    col.innerHTML = `
+                        <div class="single_lens mt-30 wow fadeInUpBig" data-wow-duration="1.3s" data-wow-delay="${delay}s">
+                            <div class="lens_video">
+                                <video autoplay loop muted playsinline>
+                                    <source src="${lens.videoUrl}" type="video/mp4">
+                                </video>
+                                <div class="lens_overlay">
+                                    <div class="lens_icon_circle">
+                                        <i class="lni lni-snapchat"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lens_content">
+                                <div class="lens_icon_wrapper">
+                                    <img src="${lens.iconUrl}" alt="Lens Icon" class="lens_icon">
+                                </div>
+                                <h4 class="lens_title">${lens.name}</h4>
+                                <a href="${lens.url}" target="_blank" class="lens_btn">Open Lens</a>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(col);
+                });
+            } else {
+                // If no data in localStorage, update existing cards
                 const lensCards = document.querySelectorAll('.single_lens');
                 
                 lensCards.forEach((card, index) => {
-                    if (lensData[index]) {
+                    if (lensData && lensData[index]) {
                         // Update video source
                         const video = card.querySelector('video source');
                         if (video && lensData[index].videoUrl) {
@@ -615,6 +932,12 @@
                         const link = card.querySelector('.lens_btn');
                         if (link && lensData[index].url) {
                             link.href = lensData[index].url;
+                        }
+                        
+                        // Update lens icon
+                        const icon = card.querySelector('.lens_icon');
+                        if (icon && lensData[index].iconUrl) {
+                            icon.src = lensData[index].iconUrl;
                         }
                     }
                 });

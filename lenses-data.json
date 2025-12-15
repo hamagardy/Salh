@@ -2,46 +2,55 @@
   {
     "name": "Lens Name 1",
     "url": "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-1",
-    "videoUrl": "assets/videos/lens1.mp4"
+    "videoUrl": "assets/videos/lens1.mp4",
+    "iconUrl": "assets/images/logo.svg"
   },
   {
     "name": "Lens Name 2",
     "url": "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-2",
-    "videoUrl": "assets/videos/lens2.mp4"
+    "videoUrl": "assets/videos/lens2.mp4",
+    "iconUrl": "assets/images/logo.svg"
   },
   {
     "name": "Lens Name 3",
     "url": "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-3",
-    "videoUrl": "assets/videos/lens3.mp4"
+    "videoUrl": "assets/videos/lens3.mp4",
+    "iconUrl": "assets/images/logo.svg"
   },
   {
     "name": "Lens Name 4",
     "url": "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-4",
-    "videoUrl": "assets/videos/lens4.mp4"
+    "videoUrl": "assets/videos/lens4.mp4",
+    "iconUrl": "assets/images/logo.svg"
   },
   {
     "name": "Lens Name 5",
     "url": "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-5",
-    "videoUrl": "assets/videos/lens5.mp4"
+    "videoUrl": "assets/videos/lens5.mp4",
+    "iconUrl": "assets/images/logo.svg"
   },
   {
     "name": "Lens Name 6",
     "url": "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-6",
-    "videoUrl": "assets/videos/lens6.mp4"
+    "videoUrl": "assets/videos/lens6.mp4",
+    "iconUrl": "assets/images/logo.svg"
   },
   {
     "name": "Lens Name 7",
     "url": "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-7",
-    "videoUrl": "assets/videos/lens7.mp4"
+    "videoUrl": "assets/videos/lens7.mp4",
+    "iconUrl": "assets/images/logo.svg"
   },
   {
     "name": "Lens Name 8",
     "url": "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-8",
-    "videoUrl": "assets/videos/lens8.mp4"
+    "videoUrl": "assets/videos/lens8.mp4",
+    "iconUrl": "assets/images/logo.svg"
   },
   {
     "name": "Lens Name 9",
     "url": "https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-9",
-    "videoUrl": "assets/videos/lens9.mp4"
+    "videoUrl": "assets/videos/lens9.mp4",
+    "iconUrl": "assets/images/logo.svg"
   }
 ]
