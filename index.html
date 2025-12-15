@@ -587,6 +587,41 @@
     <!--====== Main js ======-->
     <script src="assets/js/main.js"></script>
 
+    <!--====== Load Lenses from LocalStorage ======-->
+    <script>
+        // Load lens data from localStorage and update the page
+        document.addEventListener('DOMContentLoaded', function() {
+            const lensData = JSON.parse(localStorage.getItem('lensData'));
+            
+            if (lensData && lensData.length === 9) {
+                const lensCards = document.querySelectorAll('.single_lens');
+                
+                lensCards.forEach((card, index) => {
+                    if (lensData[index]) {
+                        // Update video source
+                        const video = card.querySelector('video source');
+                        if (video && lensData[index].videoUrl) {
+                            video.src = lensData[index].videoUrl;
+                            video.parentElement.load();
+                        }
+                        
+                        // Update lens title
+                        const title = card.querySelector('.lens_title');
+                        if (title && lensData[index].name) {
+                            title.textContent = lensData[index].name;
+                        }
+                        
+                        // Update lens URL
+                        const link = card.querySelector('.lens_btn');
+                        if (link && lensData[index].url) {
+                            link.href = lensData[index].url;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
 </body>
 
 </html>

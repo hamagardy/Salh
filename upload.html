@@ -273,37 +273,17 @@
         }
 
         // Save all lenses
-        async function saveAllLenses() {
+        function saveAllLenses() {
             // Save to localStorage
             localStorage.setItem('lensData', JSON.stringify(lensData));
             
-            // Send to server to update index.html
-            try {
-                const response = await fetch('save-lenses.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ lenses: lensData })
-                });
-
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Show success message
-                    const message = document.getElementById('successMessage');
-                    message.textContent = '✓ ' + result.message;
-                    message.style.display = 'block';
-                    setTimeout(() => {
-                        message.style.display = 'none';
-                    }, 3000);
-                } else {
-                    alert('Error: ' + result.message);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to save changes. Make sure you are running this on a PHP server.');
-            }
+            // Show success message
+            const message = document.getElementById('successMessage');
+            message.textContent = '✓ Changes saved! Refresh index.html to see updates.';
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
         }
 
         // Initialize
