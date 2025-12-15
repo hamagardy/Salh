@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Lens Editor - Salh Al-Amri</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .lens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .lens-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .lens-card h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .lens-number {
+            background: #00A78E;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00A78E;
+        }
+
+        .preview {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            font-size: 12px;
+            color: #666;
+            word-break: break-all;
+        }
+
+        .save-all-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 18px 40px;
+            background: #00A78E;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 167, 142, 0.4);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .save-all-btn:hover {
+            background: #008c76;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 167, 142, 0.5);
+        }
+
+        .save-all-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 2000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .lens-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .save-all-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 15px 30px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Portfolio</a>
+        
+        <div class="header">
+            <h1>🎬 Lens Editor</h1>
+            <p>Manage your Snapchat lenses - Add URLs and save to update your portfolio</p>
+        </div>
+
+        <div class="lens-grid" id="lensGrid"></div>
+    </div>
+
+    <button class="save-all-btn" onclick="saveAllLenses()">💾 Save All Changes</button>
+    <div class="success-message" id="successMessage">✓ Changes saved successfully!</div>
+
+    <script>
+        // Load existing lens data from localStorage or use defaults
+        let lensData = JSON.parse(localStorage.getItem('lensData')) || Array(9).fill(null).map((_, i) => ({
+            name: `Lens Name ${i + 1}`,
+            url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
+            videoUrl: `assets/videos/lens${i + 1}.mp4`
+        }));
+
+        // Generate lens cards
+        function generateLensCards() {
+            const grid = document.getElementById('lensGrid');
+            grid.innerHTML = '';
+
+            lensData.forEach((lens, index) => {
+                const card = document.createElement('div');
+                card.className = 'lens-card';
+                card.innerHTML = `
+                    <h3>
+                        <span>Lens ${index + 1}</span>
+                        <span class="lens-number">${index + 1}</span>
+                    </h3>
+                    <div class="form-group">
+                        <label>Lens Name</label>
+                        <input type="text" 
+                               id="name-${index}" 
+                               value="${lens.name}" 
+                               placeholder="Enter lens name"
+                               onchange="updateLens(${index}, 'name', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>Snapchat Lens URL</label>
+                        <input type="url" 
+                               id="url-${index}" 
+                               value="${lens.url}" 
+                               placeholder="https://www.snapchat.com/unlock/..."
+                               onchange="updateLens(${index}, 'url', this.value)">
+                        <div class="preview">🔗 ${lens.url}</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Video URL</label>
+                        <input type="text" 
+                               id="video-${index}" 
+                               value="${lens.videoUrl}" 
+                               placeholder="assets/videos/lens1.mp4 or https://..."
+                               onchange="updateLens(${index}, 'videoUrl', this.value)">
+                        <div class="preview">🎥 ${lens.videoUrl}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Update lens data
+        function updateLens(index, field, value) {
+            lensData[index][field] = value;
+            // Update preview
+            if (field === 'url' || field === 'videoUrl') {
+                const preview = document.querySelector(`#${field === 'url' ? 'url' : 'video'}-${index}`).nextElementSibling;
+                preview.textContent = `${field === 'url' ? '🔗' : '🎥'} ${value}`;
+            }
+        }
+
+        // Save all lenses
+        async function saveAllLenses() {
+            // Save to localStorage
+            localStorage.setItem('lensData', JSON.stringify(lensData));
+            
+            // Send to server to update index.html
+            try {
+                const response = await fetch('save-lenses.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ lenses: lensData })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show success message
+                    const message = document.getElementById('successMessage');
+                    message.textContent = '✓ ' + result.message;
+                    message.style.display = 'block';
+                    setTimeout(() => {
+                        message.style.display = 'none';
+                    }, 3000);
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to save changes. Make sure you are running this on a PHP server.');
+            }
+        }
+
+        // Initialize
+        generateLensCards();
+    </script>
+</body>
+
+</html>
