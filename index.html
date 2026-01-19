@@ -662,14 +662,17 @@
     <!--====== Main js ======-->
     <script src="assets/js/main.js"></script>
 
+    <!--====== Firebase Config (Load first) ======-->
+    <script src="firebase-config.js"></script>
+    
     <!--====== Firebase SDK (Modular v9+) ======-->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, doc, getDoc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
         
-        // Load config (obfuscated)
-        await import('./firebase-config.js');
+        // Wait a bit for config to load
+        await new Promise(resolve => setTimeout(resolve, 100));
         
         let db = null;
         let firebaseInitialized = false;
@@ -687,9 +690,11 @@
                 
                 // Clean up config from global scope
                 delete window.firebaseConfig;
+            } else {
+                console.warn('Firebase config not found. Check firebase-config.js');
             }
         } catch (error) {
-            // Silent fail - use localStorage fallback
+            console.error('Firebase initialization error:', error);
         }
         
         // Make db available globally for lens loading
