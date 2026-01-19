@@ -263,14 +263,115 @@
     <button class="save-all-btn" onclick="saveAllLenses()">💾 Save All Changes</button>
     <div class="success-message" id="successMessage">✓ Changes saved successfully!</div>
 
+    <!--====== Firebase SDK (Modular v9+) ======-->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+        
+        // Load config (obfuscated)
+        await import('./firebase-config.js');
+        
+        let db = null;
+        let firebaseInitialized = false;
+        
+        try {
+            if (window.firebaseConfig && window.firebaseConfig.apiKey) {
+                const app = initializeApp(window.firebaseConfig);
+                db = getFirestore(app);
+                firebaseInitialized = true;
+                
+                // Initialize analytics (silently)
+                try {
+                    getAnalytics(app);
+                } catch(e) {}
+                
+                // Clean up config from global scope
+                delete window.firebaseConfig;
+            }
+        } catch (error) {
+            // Silent fail - use localStorage fallback
+        }
+        
+        // Make db available globally
+        window.firebaseDb = db;
+        window.firebaseInitialized = firebaseInitialized;
+    </script>
+
     <script>
-        // Load existing lens data from localStorage or use defaults
-        let lensData = JSON.parse(localStorage.getItem('lensData')) || Array(9).fill(null).map((_, i) => ({
-            name: `Lens Name ${i + 1}`,
-            url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
-            videoUrl: `assets/videos/lens${i + 1}.mp4`,
-            iconUrl: `assets/images/logo.svg`
-        }));
+
+        // Load existing lens data from Firestore or localStorage or use defaults
+        let lensData = [];
+        
+        async function loadLensData() {
+            // Wait for Firebase to initialize
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            if (window.firebaseInitialized && window.firebaseDb) {
+                try {
+                    const { doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                    const db = window.firebaseDb;
+                    const lensesRef = doc(db, 'lenses', 'data');
+                    
+                    const docSnap = await getDoc(lensesRef);
+                    if (docSnap.exists()) {
+                        lensData = docSnap.data().lenses || [];
+                        if (lensData.length === 0) {
+                            lensData = Array(9).fill(null).map((_, i) => ({
+                                name: `Lens Name ${i + 1}`,
+                                url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
+                                videoUrl: `assets/videos/lens${i + 1}.mp4`,
+                                iconUrl: `assets/images/logo.svg`
+                            }));
+                        }
+                        generateLensCards();
+                        localStorage.setItem('lensData', JSON.stringify(lensData));
+                    } else {
+                        // No data in Firestore, try localStorage
+                        const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
+                        if (localData && localData.length > 0) {
+                            lensData = localData;
+                        } else {
+                            lensData = Array(9).fill(null).map((_, i) => ({
+                                name: `Lens Name ${i + 1}`,
+                                url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
+                                videoUrl: `assets/videos/lens${i + 1}.mp4`,
+                                iconUrl: `assets/images/logo.svg`
+                            }));
+                        }
+                        generateLensCards();
+                    }
+                } catch (error) {
+                    // Silent fail - use localStorage fallback
+                    const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
+                    if (localData && localData.length > 0) {
+                        lensData = localData;
+                    } else {
+                        lensData = Array(9).fill(null).map((_, i) => ({
+                            name: `Lens Name ${i + 1}`,
+                            url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
+                            videoUrl: `assets/videos/lens${i + 1}.mp4`,
+                            iconUrl: `assets/images/logo.svg`
+                        }));
+                    }
+                    generateLensCards();
+                }
+            } else {
+                // Fallback to localStorage
+                const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
+                if (localData && localData.length > 0) {
+                    lensData = localData;
+                } else {
+                    lensData = Array(9).fill(null).map((_, i) => ({
+                        name: `Lens Name ${i + 1}`,
+                        url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
+                        videoUrl: `assets/videos/lens${i + 1}.mp4`,
+                        iconUrl: `assets/images/logo.svg`
+                    }));
+                }
+                generateLensCards();
+            }
+        }
 
         // Generate lens cards
         function generateLensCards() {
@@ -370,22 +471,52 @@
             }
         }
 
+        // Load data on page load (after functions are defined)
+        loadLensData();
+
         // Save all lenses
-        function saveAllLenses() {
-            // Save to localStorage
+        async function saveAllLenses() {
+            // Save to localStorage first (as backup)
             localStorage.setItem('lensData', JSON.stringify(lensData));
             
-            // Show success message
-            const message = document.getElementById('successMessage');
-            message.textContent = `✓ Changes saved! ${lensData.length} lenses updated. Refresh index.html to see updates.`;
-            message.style.display = 'block';
-            setTimeout(() => {
-                message.style.display = 'none';
-            }, 3000);
+            // Save to Firestore (shared database) if available
+            if (window.firebaseInitialized && window.firebaseDb) {
+                try {
+                    const { doc, setDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+                    const db = window.firebaseDb;
+                    const lensesRef = doc(db, 'lenses', 'data');
+                    
+                    await setDoc(lensesRef, {
+                        lenses: lensData,
+                        lastUpdated: serverTimestamp()
+                    });
+                    
+                    // Show success message
+                    const message = document.getElementById('successMessage');
+                    message.textContent = `✓ Changes saved to cloud! ${lensData.length} lenses updated. All users will see updates automatically.`;
+                    message.style.display = 'block';
+                    setTimeout(() => {
+                        message.style.display = 'none';
+                    }, 4000);
+                } catch (error) {
+                    // Silent fail - still show success for localStorage
+                    const message = document.getElementById('successMessage');
+                    message.textContent = `✓ Saved locally. ${lensData.length} lenses updated.`;
+                    message.style.display = 'block';
+                    setTimeout(() => {
+                        message.style.display = 'none';
+                    }, 4000);
+                }
+            } else {
+                // Only localStorage available
+                const message = document.getElementById('successMessage');
+                message.textContent = `✓ Saved locally only. Configure Firebase for cloud sync. ${lensData.length} lenses updated.`;
+                message.style.display = 'block';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 4000);
+            }
         }
-
-        // Initialize
-        generateLensCards();
     </script>
 </body>
 
