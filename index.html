@@ -665,36 +665,31 @@
     <!--====== Firebase Config (Load first) ======-->
     <script src="firebase-config.js"></script>
     
-    <!--====== Firebase SDK (Modular v9+) ======-->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
-        
-        // Wait a bit for config to load
-        await new Promise(resolve => setTimeout(resolve, 100));
-        
+    <!--====== Firebase SDK (Compat - Works in all browsers including mobile/in-app) ======-->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    <script>
+        // Initialize Firebase (works in all browsers)
         let db = null;
         let firebaseInitialized = false;
         
         try {
-            if (window.firebaseConfig && window.firebaseConfig.apiKey) {
-                const app = initializeApp(window.firebaseConfig);
-                db = getFirestore(app);
+            if (window.firebaseConfig && window.firebaseConfig.apiKey && typeof firebase !== 'undefined') {
+                const app = firebase.initializeApp(window.firebaseConfig);
+                db = firebase.firestore();
                 firebaseInitialized = true;
                 
                 // Initialize analytics (silently)
                 try {
-                    getAnalytics(app);
+                    firebase.analytics();
                 } catch(e) {}
                 
                 // Clean up config from global scope
                 delete window.firebaseConfig;
-            } else {
-                console.warn('Firebase config not found. Check firebase-config.js');
             }
         } catch (error) {
-            console.error('Firebase initialization error:', error);
+            // Silent fail - use localStorage fallback
         }
         
         // Make db available globally for lens loading
@@ -904,9 +899,7 @@
     </script>
 
     <!--====== Load Lenses from Firestore (Shared Database) ======-->
-    <script type="module">
-        import { getFirestore, doc, getDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        
+    <script>
         // Function to render lenses on the page
         function renderLenses(lensData) {
             if (!lensData || lensData.length === 0) {
@@ -951,51 +944,58 @@
         }
 
         // Load lens data from Firestore or localStorage fallback
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // Wait a bit for Firebase to initialize
-            await new Promise(resolve => setTimeout(resolve, 100));
-            
-            if (window.firebaseInitialized && window.firebaseDb) {
-                try {
-                    const db = window.firebaseDb;
-                    const lensesRef = doc(db, 'lenses', 'data');
-                    
-                    // Load initial data
-                    const docSnap = await getDoc(lensesRef);
-                    if (docSnap.exists()) {
-                        const lensData = docSnap.data().lenses || [];
-                        renderLenses(lensData);
-                        localStorage.setItem('lensData', JSON.stringify(lensData));
-                    } else {
-                        // No data in Firestore, try localStorage
+            setTimeout(function() {
+                if (window.firebaseInitialized && window.firebaseDb && typeof firebase !== 'undefined') {
+                    try {
+                        const db = window.firebaseDb;
+                        const lensesRef = db.collection('lenses').doc('data');
+                        
+                        // Load initial data
+                        lensesRef.get().then(function(docSnap) {
+                            if (docSnap.exists()) {
+                                const lensData = docSnap.data().lenses || [];
+                                renderLenses(lensData);
+                                localStorage.setItem('lensData', JSON.stringify(lensData));
+                            } else {
+                                // No data in Firestore, try localStorage
+                                const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
+                                if (localData && localData.length > 0) {
+                                    renderLenses(localData);
+                                }
+                            }
+                        }).catch(function(error) {
+                            // Fallback to localStorage
+                            const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
+                            if (localData && localData.length > 0) {
+                                renderLenses(localData);
+                            }
+                        });
+                        
+                        // Listen for real-time updates
+                        lensesRef.onSnapshot(function(docSnap) {
+                            if (docSnap.exists()) {
+                                const lensData = docSnap.data().lenses || [];
+                                renderLenses(lensData);
+                                localStorage.setItem('lensData', JSON.stringify(lensData));
+                            }
+                        });
+                    } catch (error) {
+                        // Fallback to localStorage
                         const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
                         if (localData && localData.length > 0) {
                             renderLenses(localData);
                         }
                     }
-                    
-                    // Listen for real-time updates (silently)
-                    onSnapshot(lensesRef, (docSnap) => {
-                        if (docSnap.exists()) {
-                            const lensData = docSnap.data().lenses || [];
-                            renderLenses(lensData);
-                            localStorage.setItem('lensData', JSON.stringify(lensData));
-                        }
-                    });
-                } catch (error) {
-                    // Silent fail - use localStorage fallback
-                    const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
-                    if (localData && localData.length > 0) {
-                        renderLenses(localData);
+                } else {
+                    // Fallback to localStorage if Firebase not configured
+                    const lensData = JSON.parse(localStorage.getItem('lensData') || '[]');
+                    if (lensData && lensData.length > 0) {
+                        renderLenses(lensData);
                     }
                 }
-            } else {
-                // Fallback to localStorage if Firebase not configured
-                const lensData = JSON.parse(localStorage.getItem('lensData') || '[]');
-                if (lensData && lensData.length > 0) {
-                    renderLenses(lensData);
-                }
-            }
+            }, 300);
         });
     </script>
 
