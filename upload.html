@@ -300,7 +300,7 @@
 
     <script>
 
-        // Load existing lens data from Firestore (primary) or localStorage (backup) or use defaults
+        // Load existing lens data from Firestore only
         let lensData = [];
         
         function loadLensData() {
@@ -346,48 +346,7 @@
                         });
                     } catch (error) {
                         console.error('Firebase initialization error:', error);
-                        // Fallback to localStorage
-                        try {
-                            const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
-                            if (localData && localData.length > 0) {
-                                lensData = localData;
-                            } else {
-                                lensData = Array(9).fill(null).map((_, i) => ({
-                                    name: `Lens Name ${i + 1}`,
-                                    url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
-                                    videoUrl: `assets/videos/lens${i + 1}.mp4`,
-                                    iconUrl: `assets/images/logo.svg`
-                                }));
-                            }
-                            generateLensCards();
-                        } catch(e) {
-                            console.error('Error parsing localStorage:', e);
-                            lensData = Array(9).fill(null).map((_, i) => ({
-                                name: `Lens Name ${i + 1}`,
-                                url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
-                                videoUrl: `assets/videos/lens${i + 1}.mp4`,
-                                iconUrl: `assets/images/logo.svg`
-                            }));
-                            generateLensCards();
-                        }
-                    }
-                } else {
-                    // Fallback to localStorage
-                    try {
-                        const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
-                        if (localData && localData.length > 0) {
-                            lensData = localData;
-                        } else {
-                            lensData = Array(9).fill(null).map((_, i) => ({
-                                name: `Lens Name ${i + 1}`,
-                                url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
-                                videoUrl: `assets/videos/lens${i + 1}.mp4`,
-                                iconUrl: `assets/images/logo.svg`
-                            }));
-                        }
-                        generateLensCards();
-                    } catch(e) {
-                        console.error('Error parsing localStorage:', e);
+                        // Use default data
                         lensData = Array(9).fill(null).map((_, i) => ({
                             name: `Lens Name ${i + 1}`,
                             url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
@@ -396,6 +355,16 @@
                         }));
                         generateLensCards();
                     }
+                } else {
+                    // Firebase not initialized
+                    console.error('Firebase not initialized');
+                    lensData = Array(9).fill(null).map((_, i) => ({
+                        name: `Lens Name ${i + 1}`,
+                        url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
+                        videoUrl: `assets/videos/lens${i + 1}.mp4`,
+                        iconUrl: `assets/images/logo.svg`
+                    }));
+                    generateLensCards();
                 }
             }, 500);
         }
@@ -518,6 +487,11 @@
                         setTimeout(function() {
                             message.style.display = 'none';
                         }, 4000);
+                        
+                        // Reload the page to confirm the data was saved
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1500);
                     }).catch(function(error) {
                         console.error('Error saving to Firestore:', error);
                         // Show error message
