@@ -903,15 +903,16 @@
         // Function to render lenses on the page
         function renderLenses(lensData) {
             if (!lensData || lensData.length === 0) {
+                // If no data from Firebase, show a message
+                const container = document.getElementById('lensesContainer');
+                container.innerHTML = '<div class="col-12"><p class="text-center">No lenses available at the moment. Please check back later.</p></div>';
                 return;
             }
 
             const container = document.getElementById('lensesContainer');
             
-            // Clear existing lenses
-            while (container.firstChild) {
-                container.removeChild(container.firstChild);
-            }
+            // Clear existing content
+            container.innerHTML = '';
             
             // Generate lens cards dynamically
             lensData.forEach((lens, index) => {
@@ -932,7 +933,7 @@
                         </div>
                         <div class="lens_content">
                             <div class="lens_icon_wrapper">
-                                <img src="${lens.iconUrl}" alt="Lens Icon" class="lens_icon">
+                                <img src="${lens.iconUrl}" alt="${lens.name}" class="lens_icon">
                             </div>
                             <h4 class="lens_title">${lens.name}</h4>
                             <a href="${lens.url}" target="_blank" class="lens_btn">Open Lens</a>
@@ -943,8 +944,12 @@
             });
         }
 
-        // Load lens data from Firestore or localStorage fallback
+        // Load lens data from Firestore
         document.addEventListener('DOMContentLoaded', function() {
+            // Clear the initial static content immediately
+            const container = document.getElementById('lensesContainer');
+            container.innerHTML = '<div class="col-12"><p class="text-center">Loading lenses...</p></div>';
+            
             // Wait a bit for Firebase to initialize
             setTimeout(function() {
                 if (window.firebaseInitialized && window.firebaseDb && typeof firebase !== 'undefined') {
@@ -952,25 +957,18 @@
                         const db = window.firebaseDb;
                         const lensesRef = db.collection('lenses').doc('data');
                         
-                        // Load initial data
+                        // Load initial data from Firestore
                         lensesRef.get().then(function(docSnap) {
                             if (docSnap.exists()) {
                                 const lensData = docSnap.data().lenses || [];
                                 renderLenses(lensData);
-                                localStorage.setItem('lensData', JSON.stringify(lensData));
                             } else {
-                                // No data in Firestore, try localStorage
-                                const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
-                                if (localData && localData.length > 0) {
-                                    renderLenses(localData);
-                                }
+                                // No data in Firestore
+                                renderLenses([]);
                             }
                         }).catch(function(error) {
-                            // Fallback to localStorage
-                            const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
-                            if (localData && localData.length > 0) {
-                                renderLenses(localData);
-                            }
+                            console.error('Error fetching data from Firestore:', error);
+                            renderLenses([]);
                         });
                         
                         // Listen for real-time updates
@@ -978,22 +976,21 @@
                             if (docSnap.exists()) {
                                 const lensData = docSnap.data().lenses || [];
                                 renderLenses(lensData);
-                                localStorage.setItem('lensData', JSON.stringify(lensData));
+                            } else {
+                                // Document doesn't exist
+                                renderLenses([]);
                             }
+                        }, function(error) {
+                            console.error('Error in real-time listener:', error);
                         });
                     } catch (error) {
-                        // Fallback to localStorage
-                        const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
-                        if (localData && localData.length > 0) {
-                            renderLenses(localData);
-                        }
+                        console.error('Firebase initialization error:', error);
+                        renderLenses([]);
                     }
                 } else {
-                    // Fallback to localStorage if Firebase not configured
-                    const lensData = JSON.parse(localStorage.getItem('lensData') || '[]');
-                    if (lensData && lensData.length > 0) {
-                        renderLenses(lensData);
-                    }
+                    // Firebase not initialized
+                    console.error('Firebase not initialized');
+                    renderLenses([]);
                 }
             }, 300);
         });

@@ -300,7 +300,7 @@
 
     <script>
 
-        // Load existing lens data from Firestore or localStorage or use defaults
+        // Load existing lens data from Firestore (primary) or localStorage (backup) or use defaults
         let lensData = [];
         
         function loadLensData() {
@@ -323,24 +323,31 @@
                                     }));
                                 }
                                 generateLensCards();
-                                localStorage.setItem('lensData', JSON.stringify(lensData));
                             } else {
-                                // No data in Firestore, try localStorage
-                                const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
-                                if (localData && localData.length > 0) {
-                                    lensData = localData;
-                                } else {
-                                    lensData = Array(9).fill(null).map((_, i) => ({
-                                        name: `Lens Name ${i + 1}`,
-                                        url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
-                                        videoUrl: `assets/videos/lens${i + 1}.mp4`,
-                                        iconUrl: `assets/images/logo.svg`
-                                    }));
-                                }
+                                // No data in Firestore
+                                lensData = Array(9).fill(null).map((_, i) => ({
+                                    name: `Lens Name ${i + 1}`,
+                                    url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
+                                    videoUrl: `assets/videos/lens${i + 1}.mp4`,
+                                    iconUrl: `assets/images/logo.svg`
+                                }));
                                 generateLensCards();
                             }
                         }).catch(function(error) {
-                            // Fallback to localStorage
+                            console.error('Error fetching from Firestore:', error);
+                            // Use default data if there's an error
+                            lensData = Array(9).fill(null).map((_, i) => ({
+                                name: `Lens Name ${i + 1}`,
+                                url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
+                                videoUrl: `assets/videos/lens${i + 1}.mp4`,
+                                iconUrl: `assets/images/logo.svg`
+                            }));
+                            generateLensCards();
+                        });
+                    } catch (error) {
+                        console.error('Firebase initialization error:', error);
+                        // Fallback to localStorage
+                        try {
                             const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
                             if (localData && localData.length > 0) {
                                 lensData = localData;
@@ -353,9 +360,20 @@
                                 }));
                             }
                             generateLensCards();
-                        });
-                    } catch (error) {
-                        // Fallback to localStorage
+                        } catch(e) {
+                            console.error('Error parsing localStorage:', e);
+                            lensData = Array(9).fill(null).map((_, i) => ({
+                                name: `Lens Name ${i + 1}`,
+                                url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
+                                videoUrl: `assets/videos/lens${i + 1}.mp4`,
+                                iconUrl: `assets/images/logo.svg`
+                            }));
+                            generateLensCards();
+                        }
+                    }
+                } else {
+                    // Fallback to localStorage
+                    try {
                         const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
                         if (localData && localData.length > 0) {
                             lensData = localData;
@@ -368,21 +386,16 @@
                             }));
                         }
                         generateLensCards();
-                    }
-                } else {
-                    // Fallback to localStorage
-                    const localData = JSON.parse(localStorage.getItem('lensData') || '[]');
-                    if (localData && localData.length > 0) {
-                        lensData = localData;
-                    } else {
+                    } catch(e) {
+                        console.error('Error parsing localStorage:', e);
                         lensData = Array(9).fill(null).map((_, i) => ({
                             name: `Lens Name ${i + 1}`,
                             url: `https://www.snapchat.com/unlock/?type=SNAPCODE&uuid=your-lens-id-${i + 1}`,
                             videoUrl: `assets/videos/lens${i + 1}.mp4`,
                             iconUrl: `assets/images/logo.svg`
                         }));
+                        generateLensCards();
                     }
-                    generateLensCards();
                 }
             }, 500);
         }
@@ -490,9 +503,6 @@
 
         // Save all lenses
         function saveAllLenses() {
-            // Save to localStorage first (as backup)
-            localStorage.setItem('lensData', JSON.stringify(lensData));
-            
             // Save to Firestore (shared database) if available
             if (window.firebaseInitialized && window.firebaseDb && typeof firebase !== 'undefined') {
                 try {
@@ -509,29 +519,37 @@
                             message.style.display = 'none';
                         }, 4000);
                     }).catch(function(error) {
-                        // Still show success for localStorage
+                        console.error('Error saving to Firestore:', error);
+                        // Show error message
                         const message = document.getElementById('successMessage');
-                        message.textContent = `✓ Saved locally. ${lensData.length} lenses updated.`;
+                        message.textContent = `⚠️ Error saving to cloud. Please check Firebase configuration. ${lensData.length} lenses.`;
+                        message.style.background = '#f44336';
                         message.style.display = 'block';
                         setTimeout(function() {
+                            message.style.background = '#4CAF50';
                             message.style.display = 'none';
                         }, 4000);
                     });
                 } catch (error) {
-                    // Silent fail - still show success for localStorage
+                    console.error('Firebase error:', error);
+                    // Show error message
                     const message = document.getElementById('successMessage');
-                    message.textContent = `✓ Saved locally. ${lensData.length} lenses updated.`;
+                    message.textContent = `⚠️ Firebase error. Please check configuration. ${lensData.length} lenses.`;
+                    message.style.background = '#f44336';
                     message.style.display = 'block';
                     setTimeout(function() {
+                        message.style.background = '#4CAF50';
                         message.style.display = 'none';
                     }, 4000);
                 }
             } else {
-                // Only localStorage available
+                // Firebase not initialized
                 const message = document.getElementById('successMessage');
-                message.textContent = `✓ Saved locally only. Configure Firebase for cloud sync. ${lensData.length} lenses updated.`;
+                message.textContent = `⚠️ Firebase not configured. Please check configuration. ${lensData.length} lenses.`;
+                message.style.background = '#FF9800';
                 message.style.display = 'block';
                 setTimeout(function() {
+                    message.style.background = '#4CAF50';
                     message.style.display = 'none';
                 }, 4000);
             }
