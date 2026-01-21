@@ -472,6 +472,19 @@
 
         // Save all lenses
         function saveAllLenses() {
+            // Validate lensData before saving
+            if (!Array.isArray(lensData) || lensData.length === 0) {
+                const message = document.getElementById('successMessage');
+                message.textContent = `⚠️ No lens data to save. Please add lens information.`;
+                message.style.background = '#f44336';
+                message.style.display = 'block';
+                setTimeout(function() {
+                    message.style.background = '#4CAF50';
+                    message.style.display = 'none';
+                }, 4000);
+                return;
+            }
+            
             // Save to Firestore (shared database) if available
             if (window.firebaseInitialized && window.firebaseDb && typeof firebase !== 'undefined') {
                 try {

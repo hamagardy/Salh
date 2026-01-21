@@ -960,7 +960,15 @@
                         // Load initial data from Firestore
                         lensesRef.get().then(function(docSnap) {
                             if (docSnap.exists()) {
-                                const lensData = docSnap.data().lenses || [];
+                                const data = docSnap.data();
+                                // Check if the data has a 'lenses' property or if the data itself is the array
+                                let lensData = [];
+                                if (data.lenses && Array.isArray(data.lenses)) {
+                                    lensData = data.lenses;
+                                } else {
+                                    // If the document contains the array directly
+                                    lensData = Object.values(data).find(value => Array.isArray(value)) || [];
+                                }
                                 renderLenses(lensData);
                             } else {
                                 // No data in Firestore
@@ -974,7 +982,15 @@
                         // Listen for real-time updates
                         lensesRef.onSnapshot(function(docSnap) {
                             if (docSnap.exists()) {
-                                const lensData = docSnap.data().lenses || [];
+                                const data = docSnap.data();
+                                // Check if the data has a 'lenses' property or if the data itself is the array
+                                let lensData = [];
+                                if (data.lenses && Array.isArray(data.lenses)) {
+                                    lensData = data.lenses;
+                                } else {
+                                    // If the document contains the array directly
+                                    lensData = Object.values(data).find(value => Array.isArray(value)) || [];
+                                }
                                 renderLenses(lensData);
                             } else {
                                 // Document doesn't exist
